@@ -15,4 +15,8 @@ ActiveRecord::Schema.define(version: 2021_02_17_123942) do
   create_table "authors", force: :cascade do |t|
     t.string "name"
   end
+
+  create_table "comics", force: :cascade do |t|
+    t.string "title"
+  end
 end
