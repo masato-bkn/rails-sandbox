@@ -16,7 +16,17 @@ ActiveRecord::Schema.define(version: 2021_02_17_123942) do
     t.string "name"
   end
 
+  create_table "comic_authors", force: :cascade do |t|
+    t.integer "comic_id", null: false
+    t.integer "author_id", null: false
+    t.index ["author_id"], name: "index_comic_authors_on_author_id"
+    t.index ["comic_id"], name: "index_comic_authors_on_comic_id"
+  end
+
   create_table "comics", force: :cascade do |t|
     t.string "title"
   end
+
+  add_foreign_key "comic_authors", "authors"
+  add_foreign_key "comic_authors", "comics"
 end
