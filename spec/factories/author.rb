@@ -1,8 +1,7 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-    factory :author do
-      name { 'hoge-name' }
-    end
+  factory :author do
+    name { 'hoge-name' }
   end
-  
+end

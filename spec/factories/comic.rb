@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :comic do
     title { 'hoge-title' }
-    authors { [create(:author)] } 
+    authors { [create(:author)] }
   end
 end
