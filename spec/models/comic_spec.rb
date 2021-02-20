@@ -19,7 +19,7 @@ RSpec.describe Comic, type: :model do
     expect { comic.save }.to change { Comic.count }.from(0).to(1)
   end
 
-  context 'titleについて' do
+  describe 'titleについて' do
     context 'titleがnilの場合' do
       let :title do
         nil
@@ -51,7 +51,7 @@ RSpec.describe Comic, type: :model do
     end
   end
 
-  context 'authorsについて' do
+  describe 'authorsについて' do
     let :comic do
       create(:comic)
     end
@@ -69,7 +69,7 @@ RSpec.describe Comic, type: :model do
     end
   end
 
-  context 'comic_authorsについて' do
+  describe 'comic_authorsについて' do
     let :comic do
       create(:comic)
     end
