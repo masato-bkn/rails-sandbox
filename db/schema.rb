@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_17_123942) do
+ActiveRecord::Schema.define(version: 2021_02_20_013312) do
 
   create_table "authors", force: :cascade do |t|
     t.string "name"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 2021_02_17_123942) do
 
   create_table "comics", force: :cascade do |t|
     t.string "title"
+    t.integer "type"
   end
 
   add_foreign_key "comic_authors", "authors"
