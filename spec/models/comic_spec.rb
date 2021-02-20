@@ -51,6 +51,22 @@ RSpec.describe Comic, type: :model do
     end
   end
 
+  describe 'typeについて' do
+    let :comic do
+      build(:comic, type: type)
+    end
+
+    let :type do
+      Enum::ComicType.count + 1
+    end
+
+    context 'typeがEnum::ComicTypeに定義されていない値の場合' do
+      it do
+        expect(comic).to be_invalid
+      end
+    end
+  end
+
   describe 'authorsについて' do
     let :comic do
       create(:comic)

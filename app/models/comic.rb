@@ -5,6 +5,7 @@ class Comic < ApplicationRecord
   has_many :authors, through: :comic_authors
 
   validates :title, presence: true, length: (1..100)
+  validates :type, inclusion: { in: Enum::ComicType.values }
 
   bind_inum :type, Enum::ComicType
 
