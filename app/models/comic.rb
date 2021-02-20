@@ -5,4 +5,8 @@ class Comic < ApplicationRecord
   has_many :authors, through: :comic_authors
 
   validates :title, presence: true, length: (1..100)
+
+  bind_inum :type, Enum::ComicType
+
+  self.inheritance_column = :_type_disabled
 end
