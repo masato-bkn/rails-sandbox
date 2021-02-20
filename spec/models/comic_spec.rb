@@ -19,7 +19,7 @@ RSpec.describe Comic, type: :model do
     expect { comic.save }.to change { Comic.count }.from(0).to(1)
   end
 
-  context 'titleについて' do
+  describe 'titleについて' do
     context 'titleがnilの場合' do
       let :title do
         nil
@@ -51,7 +51,23 @@ RSpec.describe Comic, type: :model do
     end
   end
 
-  context 'authorsについて' do
+  describe 'typeについて' do
+    let :comic do
+      build(:comic, type: type)
+    end
+
+    let :type do
+      Enum::ComicType.count + 1
+    end
+
+    context 'typeがEnum::ComicTypeに定義されていない値の場合' do
+      it do
+        expect(comic).to be_invalid
+      end
+    end
+  end
+
+  describe 'authorsについて' do
     let :comic do
       create(:comic)
     end
@@ -69,7 +85,7 @@ RSpec.describe Comic, type: :model do
     end
   end
 
-  context 'comic_authorsについて' do
+  describe 'comic_authorsについて' do
     let :comic do
       create(:comic)
     end
