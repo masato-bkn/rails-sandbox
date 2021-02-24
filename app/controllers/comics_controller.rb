@@ -2,7 +2,7 @@
 
 class ComicsController < ApplicationController
   def show
-    comic = Comic.create(title: 'hoge')
+    comic = Comic.find(params[:id])
     render json: comic
   end
 end
