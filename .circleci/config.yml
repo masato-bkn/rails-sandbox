@@ -1,0 +1,70 @@
+version: 2.1
+aliases:
+  - &setup_bundler
+    run:
+      name: setup bundler
+      command: |
+        gem install bundler
+        bundle config --local path 'vendor/bundle'
+        bundle config --local jobs 20
+        bundle config --local frozen true    
+  - &restore_cache
+    restore_cache:
+      keys:
+        - sandbox-app-bundle-{{ checksum "Gemfile.lock" }}
+        - sandbox-app-bundle-
+  - &save_cache
+    save_cache:
+      key: sandbox-app-bundle-{{ checksum "Gemfile.lock" }}
+      paths: 
+        - vendor/bundle        
+executors:
+  ruby:
+    docker:
+      - image: circleci/ruby:3.0.0
+        environment:
+          RAILS_ENV: test
+          TERM: dumb
+jobs:
+  bundler:
+    executor: ruby
+    steps:
+      - checkout
+      - *restore_cache
+      - *setup_bundler
+      - run:
+          name: install dependencies
+          command: |
+            bundle install
+      - *save_cache
+  rubocop:
+    executor: ruby
+    steps:
+      - checkout
+      - *restore_cache
+      - *setup_bundler
+      - run:
+          name: rubocop
+          command: |
+            bundle exec rubocop
+  rspec:
+    executor: ruby
+    steps:
+      - checkout
+      - *restore_cache
+      - *setup_bundler
+      - run:
+          name: rspec
+          command: |
+            bundle exec rspec
+workflows:
+  version: 2
+  test:
+    jobs:
+      - bundler
+      - rubocop:
+          requires:
+            - bundler
+      - rspec:
+          requires:
+            - bundler
