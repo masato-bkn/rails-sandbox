@@ -28,5 +28,10 @@ RSpec.describe ComicsController, type: :request do
     it 'returns not_found' do
       expect(subject).to have_http_status(:not_found)
     end
+
+    it ' 想定したメッセージが返却されること' do
+      result = JSON.parse(subject.body)
+      expect(result['message']).to eq('存在するcomic_idを指定してください')
+    end
   end
 end

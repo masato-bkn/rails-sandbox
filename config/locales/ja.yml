@@ -1,0 +1,5 @@
+ja:
+  errors:
+    messages:
+      not_found_comic:  存在するcomic_idを指定してください
+ 
