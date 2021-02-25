@@ -1,0 +1,29 @@
+version: 2.1
+executors:
+  ruby:
+    docker:
+      - image: cimg/ruby:3.0.0
+        environment:
+          RAILS_ENV: test
+          TERM: dumb
+jobs:
+  bundler:
+    executor: ruby
+    steps:
+      - checkout
+      - run:
+          name: configure bundler
+          command: |
+            gem install bundler
+            bundle config --local path 'vendor/bundle'
+            bundle config --local jobs 20
+            bundle config --local frozen true
+      - run:
+          name: install dependencies
+          command: |
+            bundle install
+workflows:
+  version: 2
+  test:
+    jobs:
+      - bundler
