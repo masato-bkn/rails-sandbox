@@ -1,0 +1,11 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:11.9-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: sandbox
+      POSTGRES_PASSWORD: sandbox
+    ports:
+      - "5432:5432"
