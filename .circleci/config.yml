@@ -1,5 +1,10 @@
 version: 2.1
 aliases:
+  - &exectuor_ruby
+    image: circleci/ruby:3.0.0
+    environment:
+      RAILS_ENV: test
+      TERM: dumb
   - &setup_bundler
     run:
       name: setup bundler
@@ -21,10 +26,14 @@ aliases:
 executors:
   ruby:
     docker:
-      - image: circleci/ruby:3.0.0
+      - *exectuor_ruby
+  ruby_with_db:
+    docker:
+      - *exectuor_ruby
+      - image: circleci/postgres:11.9-ram
         environment:
-          RAILS_ENV: test
-          TERM: dumb
+          POSTGRES_USER: sandbox
+          POSTGRES_PASSWORD: sandbox
 jobs:
   bundler:
     executor: ruby
@@ -48,14 +57,18 @@ jobs:
           command: |
             bundle exec rubocop
   rspec:
-    executor: ruby
+    executor: ruby_with_db
     steps:
       - checkout
       - *restore_cache
       - *setup_bundler
       - run:
+          name: Wait for DB
+          command: dockerize -wait tcp://127.0.0.1:5432 -timeout 120s
+      - run:
           name: rspec
           command: |
+            bundle exec rails db:setup
             bundle exec rspec
 workflows:
   version: 2
