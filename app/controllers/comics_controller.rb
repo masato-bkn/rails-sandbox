@@ -2,7 +2,10 @@
 
 class ComicsController < ApplicationController
   def index
-    comics = Comic.where("#{params[:cursol]} < id").limit(params[:limit])
+    cursol = params[:cursol] || 0
+    limit  = params[:limit]  || 10
+
+    comics = Comic.where("#{cursol} < id").limit(limit)
     render json: comics
   end
 

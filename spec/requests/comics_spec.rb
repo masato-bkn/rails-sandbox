@@ -10,27 +10,46 @@ RSpec.describe ComicsController, type: :request do
     end
 
     before :each do
-      comics
+      target_comics
     end
 
     let :params do
-      {
-        cursol: 10,
-        limit: 10
-      }
+      nil
     end
 
-    let :comics do
-      create_list(:comic, 20)
+    let :target_comics do
+      create_list(:comic, 10)
     end
 
     it 'returns success' do
       expect(subject).to have_http_status(:success)
     end
 
-    it 'id:11-20のcomicが返ってくる' do
-      result = JSON.parse(subject.body)
-      expect(result.count).to eq(10)
+    it 'target_comicsが返ってくる' do
+      ids = JSON.parse(subject.body).map { |v| v['id'] }
+      expect(ids).to eq(target_comics.map(&:id))
+    end
+
+    context '追加取得を要求された場合' do
+      let :comics do
+        create_list(:comic, 10) + target_comic
+      end
+
+      let :target_comic do
+        create_list(:comic, 10)
+      end
+
+      let :params do
+        {
+          cursol: target_comic.first.id - 1,
+          limit: 10
+        }
+      end
+
+      it 'target_comicが返ってくる' do
+        ids = JSON.parse(subject.body).map { |v| v['id'] }
+        expect(ids).to eq(target_comic.map(&:id))
+      end
     end
   end
 
