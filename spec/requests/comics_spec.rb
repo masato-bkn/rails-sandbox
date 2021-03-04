@@ -3,6 +3,37 @@
 require 'rails_helper'
 
 RSpec.describe ComicsController, type: :request do
+  describe 'indexについて' do
+    subject do
+      get comics_path, params: params
+      response
+    end
+
+    before :each do
+      comics
+    end
+
+    let :params do
+      {
+        cursol: 10,
+        limit: 10
+      }
+    end
+
+    let :comics do
+      create_list(:comic, 20)
+    end
+
+    it 'returns success' do
+      expect(subject).to have_http_status(:success)
+    end
+
+    it 'id:11-20のcomicが返ってくる' do
+      result = JSON.parse(subject.body)
+      expect(result.count).to eq(10)
+    end
+  end
+
   describe 'showについて' do
     subject do
       get comic_path(id: comic_id)
